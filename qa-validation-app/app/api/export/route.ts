@@ -3,7 +3,8 @@ import { readDb, writeDb, generateId, now, ExportRecord } from "@/lib/db";
 import fs from "fs";
 import path from "path";
 
-const EXPORTS_DIR = path.join(process.cwd(), "exports");
+const isVercel = process.env.VERCEL === "1";
+const EXPORTS_DIR = isVercel ? path.join("/tmp", "exports") : path.join(process.cwd(), "exports");
 
 function ensureExportsDir() {
   if (!fs.existsSync(EXPORTS_DIR)) fs.mkdirSync(EXPORTS_DIR, { recursive: true });
@@ -92,9 +93,13 @@ export async function GET(request: NextRequest) {
         "Content-Disposition": `attachment; filename="${filename}"`,
       },
     });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Export failed" }, { status: 500 });
+  } catch (err: any) {
+    console.error("Export error:", err);
+    return NextResponse.json({ 
+      error: "Export failed", 
+      details: err.message || String(err),
+      stack: err.stack
+    }, { status: 500 });
   }
 }
 
@@ -115,9 +120,13 @@ export async function POST(request: NextRequest) {
         "Content-Disposition": `attachment; filename="${path.basename(filename)}"`,
       },
     });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Download failed" }, { status: 500 });
+  } catch (err: any) {
+    console.error("Download error:", err);
+    return NextResponse.json({ 
+      error: "Download failed", 
+      details: err.message || String(err),
+      stack: err.stack
+    }, { status: 500 });
   }
 }
 

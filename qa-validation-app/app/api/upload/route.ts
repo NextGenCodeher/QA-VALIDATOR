@@ -70,9 +70,13 @@ export async function POST(request: NextRequest) {
     writeDb(db);
 
     return NextResponse.json({ success: true, session });
-  } catch (err) {
+  } catch (err: any) {
     console.error("Upload error:", err);
-    return NextResponse.json({ error: "Failed to process file" }, { status: 500 });
+    return NextResponse.json({ 
+      error: "Failed to process file", 
+      details: err.message || String(err),
+      stack: err.stack
+    }, { status: 500 });
   }
 }
 

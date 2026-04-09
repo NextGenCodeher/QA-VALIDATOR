@@ -1,8 +1,13 @@
 import fs from "fs";
 import path from "path";
+import os from "os";
 
-const DATA_DIR = path.join(process.cwd(), "data");
+const isVercel = process.env.VERCEL === "1";
+const DATA_DIR = isVercel ? path.join(os.tmpdir(), "data") : path.join(process.cwd(), "data");
 const DB_FILE = path.join(DATA_DIR, "database.json");
+
+console.log(`[DB] Using DATA_DIR: ${DATA_DIR}`);
+console.log(`[DB] Environment: ${isVercel ? "Vercel" : "Local"}`);
 
 export interface Session {
   id: string;

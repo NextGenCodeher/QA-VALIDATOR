@@ -43,9 +43,13 @@ export async function POST(request: NextRequest) {
 
     const validation = db.validations.find((v) => v.qa_pair_id === qa_pair_id);
     return NextResponse.json({ success: true, validation });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Failed to save validation" }, { status: 500 });
+  } catch (err: any) {
+    console.error("Validation error:", err);
+    return NextResponse.json({ 
+      error: "Failed to save validation", 
+      details: err.message || String(err),
+      stack: err.stack
+    }, { status: 500 });
   }
 }
 
@@ -88,8 +92,12 @@ export async function PUT(request: NextRequest) {
     writeDb(db);
 
     return NextResponse.json({ success: true, count: incoming.length });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Failed to bulk save" }, { status: 500 });
+  } catch (err: any) {
+    console.error("Bulk Validation error:", err);
+    return NextResponse.json({ 
+      error: "Failed to bulk save", 
+      details: err.message || String(err),
+      stack: err.stack
+    }, { status: 500 });
   }
 }

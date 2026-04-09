@@ -22,9 +22,13 @@ export async function GET() {
       .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
     return NextResponse.json({ sessions });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Failed to fetch sessions" }, { status: 500 });
+  } catch (err: any) {
+    console.error("Sessions error:", err);
+    return NextResponse.json({ 
+      error: "Failed to fetch sessions", 
+      details: err.message || String(err),
+      stack: err.stack
+    }, { status: 500 });
   }
 }
 
@@ -44,8 +48,12 @@ export async function DELETE(request: NextRequest) {
     writeDb(db);
 
     return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Failed to delete session" }, { status: 500 });
+  } catch (err: any) {
+    console.error("Session delete error:", err);
+    return NextResponse.json({ 
+      error: "Failed to delete session", 
+      details: err.message || String(err),
+      stack: err.stack
+    }, { status: 500 });
   }
 }

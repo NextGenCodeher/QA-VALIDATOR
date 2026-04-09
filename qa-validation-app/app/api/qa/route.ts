@@ -59,8 +59,12 @@ export async function GET(request: NextRequest) {
       },
       session,
     });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Failed to fetch Q&A pairs" }, { status: 500 });
+  } catch (err: any) {
+    console.error("QA Fetch error:", err);
+    return NextResponse.json({ 
+      error: "Failed to fetch Q&A pairs", 
+      details: err.message || String(err),
+      stack: err.stack
+    }, { status: 500 });
   }
 }
