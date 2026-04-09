@@ -141,6 +141,18 @@ body {
   text-decoration: none;
 }
 
+.navbar-logo {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(107, 33, 168, 0.2));
+  transition: transform var(--transition);
+}
+
+.navbar-brand:hover .navbar-logo {
+  transform: scale(1.05) rotate(-2deg);
+}
+
 .brand-icon {
   width: 36px;
   height: 36px;

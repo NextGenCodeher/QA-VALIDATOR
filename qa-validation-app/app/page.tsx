@@ -1135,9 +1135,12 @@ export default function App() {
       {/* Navbar */}
       <nav className="navbar">
         <a className="navbar-brand" href="#" onClick={() => setActiveSession(null)}>
-          <div>
-            <div className="brand-text">Q&A Validator</div>
-            <div className="brand-sub">ML Expert Review Platform</div>
+          <div className="flex items-center gap-3">
+            <img src="/logo.png" alt="QA Validator Logo" className="navbar-logo" />
+            <div>
+              <div className="brand-text">Q&A Validator</div>
+              <div className="brand-sub">ML Expert Review Platform</div>
+            </div>
           </div>
         </a>
         <div className="navbar-actions">
